@@ -1,0 +1,234 @@
+/* Timer Section */
+
+#timers {
+    display: flex;
+    justify-content: space-around;
+    background-color: #ffd700;
+    /* Giallo */
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px 0;
+}
+
+.timer {
+    text-align: center;
+    background-color: #ffd700;
+    /* Giallo */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timer h2 {
+    font-size: 1.8em;
+    color: #0000ff;
+    /* Blu */
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.timer p {
+    font-size: 2.8em;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #0000ff;
+    /* Blu */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+
+/* Pulsanti */
+
+.button {
+    background-color: #ffd700;
+    /* Giallo */
+    border: 3px solid #0000ff;
+    /* Bordo blu */
+    padding: 15px 30px;
+    font-size: 1.2em;
+    color: #0000ff;
+    /* Blu */
+    border-radius: 15px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    margin: 20px auto;
+    display: block;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    background-color: #0000ff;
+    /* Blu */
+    color: #ffd700;
+    /* Giallo */
+    border: 3px solid #ffd700;
+    /* Bordo giallo */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Parte Alta */
+
+header {
+    background-color: #0000ff;
+    /* Blu */
+    padding: 30px 20px;
+    text-align: center;
+    color: #ffffff;
+    /* Bianco */
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+    font-weight: bold;
+    color: #ffffff;
+    /* Bianco */
+    text-align: center;
+}
+
+
+/* Sfida del Giorno, Premi e Ricompense, Curiosità */
+
+#challenge,
+#rewards,
+#curiosity {
+    background-color: #ffd700;
+    /* Giallo */
+    text-align: center;
+    border-radius: 20px;
+    margin: 20px 0;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#challenge h2,
+#rewards h2,
+#curiosity h2 {
+    font-size: 1.8em;
+    color: #0000ff;
+    /* Blu */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#challenge p,
+#rewards p,
+#curiosity p {
+    font-size: 1.2em;
+    color: #0000ff;
+    /* Blu */
+    margin-bottom: 15px;
+}
+
+#challenge button,
+#rewards button,
+#curiosity button {
+    background-color: #ffd700;
+    /* Giallo */
+    border: 3px solid #0000ff;
+    /* Bordo blu */
+    padding: 15px 30px;
+    font-size: 1.2em;
+    color: #0000ff;
+    /* Blu */
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#challenge button:hover,
+#rewards button:hover,
+#curiosity button:hover {
+    background-color: #0000ff;
+    /* Blu */
+    color: #ffd700;
+    /* Giallo */
+    border: 3px solid #ffd700;
+    /* Bordo giallo */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Footer */
+
+footer {
+    background-color: #0000ff;
+    /* Blu */
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-logo {
+    max-height: 300px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 16px; /* Regola la dimensione del testo per schermi piccoli */
+        padding: 10px;
+    }
+    
+    .container {
+        width: 100%; /* Adatta il contenitore alla larghezza del dispositivo */
+    }
+
+    .menu {
+        display: block; /* Assicura che il menu sia visibile e ben posizionato */
+        text-align: center;
+    }
+
+    img {
+        max-width: 100%; /* Impedisce alle immagini di fuoriuscire dallo schermo */
+        height: auto;
+    }
+}
+/* Responsive adjustments for mobile */
+@media screen and (max-width: 768px) {
+    body {
+        font-size: 16px;
+        padding: 10px;
+    }
+    .container {
+        width: 100%;
+    }
+    .menu {
+        display: block;
+        text-align: center;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    .timer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .report-button {
+        width: 100%;
+        text-align: center;
+    }
+    .button {
+        width: 80%;
+        margin: 0 auto;
+    }
+    #timers {
+        flex-direction: column;
+    }
+}
