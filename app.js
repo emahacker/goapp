@@ -33,15 +33,19 @@ function updateWebTime() {
 function checkActiveTab() {
     const currentURL = window.location.href;
     const referrer = document.referrer;
+    console.log("URL attuale:", currentURL);
+    console.log("Referrer:", referrer);
 
     const isSocial = socialNetworks.some((social) => currentURL.includes(social) || referrer.includes(social));
     const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || referrer.includes("whatsapp.com") ||
                                   currentURL.includes("telegram.org") || referrer.includes("telegram.org");
 
     if (isSocial && !isWhatsAppOrTelegram) {
+        console.log("Social rilevato, avvio timer social...");
         socialTimer = startTimer(socialTimer, updateSocialTime);
         webTimer = stopTimer(webTimer);
     } else {
+        console.log("Navigazione web normale, avvio timer web...");
         webTimer = startTimer(webTimer, updateWebTime);
         socialTimer = stopTimer(socialTimer);
     }
