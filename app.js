@@ -5,15 +5,40 @@ let webTimer = null;
 
 const socialNetworks = ["facebook.com", "instagram.com", "twitter.com", "linkedin.com"];
 
+function startTimer(timer, updateFunction) {
+    if (!timer) {
+        return setInterval(updateFunction, 1000);
+    }
+    return timer;
+}
+
+function stopTimer(timer) {
+    if (timer) {
+        clearInterval(timer);
+        return null;
+    }
+    return timer;
+}
+
+function updateSocialTime() {
+    socialTime++;
+    document.getElementById("social-time").textContent = new Date(socialTime * 1000).toISOString().substr(11, 8);
+}
+
+function updateWebTime() {
+    webTime++;
+    document.getElementById("internet-time").textContent = new Date(webTime * 1000).toISOString().substr(11, 8);
+}
+
 function checkActiveTab() {
     const currentURL = window.location.href;
     const referrer = document.referrer;
-
     console.log("URL attuale:", currentURL);
     console.log("Referrer:", referrer);
 
-    const isSocial = socialNetworks.some(social => currentURL.includes(social) || referrer.includes(social));
-    const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || currentURL.includes("telegram.org");
+    const isSocial = socialNetworks.some((social) => currentURL.includes(social) || referrer.includes(social));
+    const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || referrer.includes("whatsapp.com") ||
+                                  currentURL.includes("telegram.org") || referrer.includes("telegram.org");
 
     if (isSocial && !isWhatsAppOrTelegram) {
         console.log("Social rilevato, avvio timer...");
@@ -29,20 +54,22 @@ function checkActiveTab() {
 document.addEventListener("visibilitychange", checkActiveTab);
 window.addEventListener("load", checkActiveTab);
 
-
 document.getElementById("send-report").addEventListener("click", async () => {
     const socialTime = document.getElementById("social-time").textContent;
     const webTime = document.getElementById("internet-time").textContent;
 
     try {
-        const response = await fetch("/send-report", {
+        const response = await fetch("https://api.mailgun.net/v3/YOUR_DOMAIN/messages", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                "Authorization": "Basic " + btoa("api:YOUR_MAILGUN_API_KEY"),
+                "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: JSON.stringify({
-                socialTime: socialTime,
-                webTime: webTime,
+            body: new URLSearchParams({
+                from: "Digital Detox <noreply@YOUR_DOMAIN>",
+                to: "emanuele.zuffranieri@gmail.com",
+                subject: "Report Utilizzo Digital Detox",
+                text: `Tempo sui Social: ${socialTime}\nTempo su Internet: ${webTime}`,
             }),
         });
 
