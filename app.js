@@ -38,9 +38,11 @@ function checkActiveTab() {
             const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || currentURL.includes("telegram.org");
 
             if (isSocial && !isWhatsAppOrTelegram) {
+                console.log("Social rilevato, avvio timer social...");
                 socialTimer = startTimer(socialTimer, updateSocialTime);
                 webTimer = stopTimer(webTimer);
             } else {
+                console.log("Navigazione normale, avvio timer web...");
                 webTimer = startTimer(webTimer, updateWebTime);
                 socialTimer = stopTimer(socialTimer);
             }
