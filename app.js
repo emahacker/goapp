@@ -31,24 +31,21 @@ function updateWebTime() {
 }
 
 function checkActiveTab() {
-    const currentURL = window.location.href;
-    const referrer = document.referrer;
-    console.log("URL attuale:", currentURL);
-    console.log("Referrer:", referrer);
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs.length > 0) {
+            const currentURL = tabs[0].url;
+            const isSocial = socialNetworks.some((social) => currentURL.includes(social));
+            const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || currentURL.includes("telegram.org");
 
-    const isSocial = socialNetworks.some((social) => currentURL.includes(social) || referrer.includes(social));
-    const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || referrer.includes("whatsapp.com") ||
-                                  currentURL.includes("telegram.org") || referrer.includes("telegram.org");
-
-    if (isSocial && !isWhatsAppOrTelegram) {
-        console.log("Social rilevato, avvio timer...");
-        socialTimer = startTimer(socialTimer, updateSocialTime);
-        webTimer = stopTimer(webTimer);
-    } else {
-        console.log("Navigazione normale, avvio timer web...");
-        webTimer = startTimer(webTimer, updateWebTime);
-        socialTimer = stopTimer(socialTimer);
-    }
+            if (isSocial && !isWhatsAppOrTelegram) {
+                socialTimer = startTimer(socialTimer, updateSocialTime);
+                webTimer = stopTimer(webTimer);
+            } else {
+                webTimer = startTimer(webTimer, updateWebTime);
+                socialTimer = stopTimer(socialTimer);
+            }
+        }
+    });
 }
 
 document.addEventListener("visibilitychange", checkActiveTab);
