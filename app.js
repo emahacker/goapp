@@ -31,24 +31,34 @@ function updateWebTime() {
 }
 
 function checkActiveTab() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        if (tabs.length > 0) {
-            const currentURL = tabs[0].url;
-            const isSocial = socialNetworks.some((social) => currentURL.includes(social));
-            const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || currentURL.includes("telegram.org");
+    try {
+        let currentURL = window.location.href;
+        let referrer = document.referrer;
 
-            if (isSocial && !isWhatsAppOrTelegram) {
-                console.log("Social rilevato, avvio timer social...");
-                socialTimer = startTimer(socialTimer, updateSocialTime);
-                webTimer = stopTimer(webTimer);
-            } else {
-                console.log("Navigazione normale, avvio timer web...");
-                webTimer = startTimer(webTimer, updateWebTime);
-                socialTimer = stopTimer(socialTimer);
-            }
+        console.log("URL attuale:", currentURL);
+        console.log("Referrer:", referrer);
+
+        const isSocial = socialNetworks.some(social => currentURL.includes(social) || referrer.includes(social));
+        const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || referrer.includes("whatsapp.com") ||
+                                      currentURL.includes("telegram.org") || referrer.includes("telegram.org");
+
+        if (isSocial && !isWhatsAppOrTelegram) {
+            console.log("Social rilevato, avvio timer...");
+            socialTimer = startTimer(socialTimer, updateSocialTime);
+            webTimer = stopTimer(webTimer);
+        } else {
+            console.log("Navigazione normale, avvio timer web...");
+            webTimer = startTimer(webTimer, updateWebTime);
+            socialTimer = stopTimer(socialTimer);
         }
-    });
+    } catch (error) {
+        console.error("Errore in checkActiveTab:", error);
+    }
 }
+
+// Avvia il controllo quando la pagina si carica
+document.addEventListener("visibilitychange", checkActiveTab);
+window.addEventListener("load", checkActiveTab);
 
 document.addEventListener("visibilitychange", checkActiveTab);
 window.addEventListener("load", checkActiveTab);
