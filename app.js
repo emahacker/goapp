@@ -22,84 +22,82 @@ function stopTimer(timer) {
 
 function updateSocialTime() {
     socialTime++;
-    document.getElementById("social-time").textContent = new Date(socialTime * 1000).toISOString().substr(11, 8);
+    const socialTimeElement = document.getElementById("social-time");
+    if (socialTimeElement) {
+        socialTimeElement.textContent = new Date(socialTime * 1000).toISOString().substr(11, 8);
+    }
 }
 
 function updateWebTime() {
     webTime++;
-    document.getElementById("internet-time").textContent = new Date(webTime * 1000).toISOString().substr(11, 8);
+    const webTimeElement = document.getElementById("internet-time");
+    if (webTimeElement) {
+        webTimeElement.textContent = new Date(webTime * 1000).toISOString().substr(11, 8);
+    }
 }
 
 function checkActiveTab() {
-    try {
-        if (!window.location || !window.location.href) {
-            console.error("Errore: window.location.href è undefined");
-            return;
-        }
+    const currentURL = window.location.href;
+    const referrer = document.referrer;
 
-        let currentURL = window.location.href || "";
-        let referrer = document.referrer || "";
+    const isSocial = socialNetworks.some((social) => currentURL.includes(social) || referrer.includes(social));
+    const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || referrer.includes("whatsapp.com") ||
+                                  currentURL.includes("telegram.org") || referrer.includes("telegram.org");
 
-        console.log("URL attuale:", currentURL);
-        console.log("Referrer:", referrer);
-
-        const isSocial = socialNetworks.some(social => currentURL.includes(social) || referrer.includes(social));
-        const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || referrer.includes("whatsapp.com") ||
-                                      currentURL.includes("telegram.org") || referrer.includes("telegram.org");
-
-        if (isSocial && !isWhatsAppOrTelegram) {
-            console.log("Social rilevato, avvio timer...");
-            socialTimer = startTimer(socialTimer, updateSocialTime);
-            webTimer = stopTimer(webTimer);
-        } else {
-            console.log("Navigazione normale, avvio timer web...");
-            webTimer = startTimer(webTimer, updateWebTime);
-            socialTimer = stopTimer(socialTimer);
-        }
-    } catch (error) {
-        console.error("Errore in checkActiveTab:", error);
+    if (isSocial && !isWhatsAppOrTelegram) {
+        socialTimer = startTimer(socialTimer, updateSocialTime);
+        webTimer = stopTimer(webTimer);
+    } else {
+        webTimer = startTimer(webTimer, updateWebTime);
+        socialTimer = stopTimer(socialTimer);
     }
 }
 
-// Avvia il controllo quando la pagina si carica
 document.addEventListener("visibilitychange", checkActiveTab);
 window.addEventListener("load", checkActiveTab);
 
-// 📌 INVIO REPORT VIA EMAILJS
 document.getElementById("send-report").addEventListener("click", async () => {
-    const socialTime = document.getElementById("social-time").textContent;
-    const webTime = document.getElementById("internet-time").textContent;
+    const socialTimeElement = document.getElementById("social-time");
+    const webTimeElement = document.getElementById("internet-time");
 
-    try {
-        const response = await emailjs.send("TUO_SERVICE_ID", "TUO_TEMPLATE_ID", {
-            social_time: socialTime,
-            web_time: webTime,
-            to_email: "emanuele.zuffranieri@gmail.com",
-        });
-
-        alert("Report inviato con successo!");
-    } catch (error) {
-        console.error("Errore nell'invio del report:", error);
-        alert("Errore nell'invio del report.");
+    if (!socialTimeElement || !webTimeElement) {
+        console.error("Errore: elementi non trovati.");
+        return;
     }
+
+    const socialTime = socialTimeElement.textContent;
+    const webTime = webTimeElement.textContent;
+
+    emailjs.send("service_v8cqbdi", "template_vt8tycd", {
+        social_time: socialTime,
+        web_time: webTime,
+        to_email: "emanuele.zuffranieri@gmail.com"
+    }).then(response => {
+        alert("Report inviato con successo!");
+    }, error => {
+        console.error("Errore:", error);
+        alert("Errore nell'invio del report.");
+    });
 });
 
-// 🔹 Lista curiosità
+// Funzione per aggiornare la curiosità ogni 10 minuti
 const curiosities = [
-    "Spegnere il telefono prima di andare a letto riduce lo stress!",
-    "Passare meno tempo sui Social aumenta la felicità.",
+    "Spegnere il telefono prima di andare a letto riduce lo stress! Meno notifiche, meno ansia.",
+    "Passare meno tempo sui Social aumenta la felicità. Meno confronto con gli altri, più soddisfazione personale.",
     "Disconnettersi dai dispositivi elettronici aumenta la produttività.",
     "Mettere da parte il telefono promuove l'attività fisica."
 ];
 
 function updateCuriosity() {
-    const randomIndex = Math.floor(Math.random() * curiosities.length);
-    document.getElementById("daily-curiosity").textContent = curiosities[randomIndex];
+    const curiosityElement = document.getElementById("daily-curiosity");
+    if (curiosityElement) {
+        const randomIndex = Math.floor(Math.random() * curiosities.length);
+        curiosityElement.textContent = curiosities[randomIndex];
+    }
 }
 updateCuriosity();
 setInterval(updateCuriosity, 600000);
 
-// 🔹 Lista sfide giornaliere
 document.addEventListener("DOMContentLoaded", () => {
     const dailyChallenges = [
         "Scrivi una pagina di diario sulla tua giornata di oggi.",
@@ -109,16 +107,21 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
     
     function selectDailyChallenge() {
-        const randomIndex = Math.floor(Math.random() * dailyChallenges.length);
-        document.getElementById("daily-challenge").textContent = dailyChallenges[randomIndex];
+        const challengeElement = document.getElementById("daily-challenge");
+        if (challengeElement) {
+            const randomIndex = Math.floor(Math.random() * dailyChallenges.length);
+            challengeElement.textContent = dailyChallenges[randomIndex];
+        }
     }
 
     function completeChallenge() {
         const badgeContainer = document.getElementById("badges");
-        const newBadge = document.createElement("p");
-        newBadge.textContent = "🎖️ Medaglia guadagnata!";
-        badgeContainer.appendChild(newBadge);
-        selectDailyChallenge();
+        if (badgeContainer) {
+            const newBadge = document.createElement("p");
+            newBadge.textContent = "🎖️ Medaglia guadagnata!";
+            badgeContainer.appendChild(newBadge);
+            selectDailyChallenge();
+        }
     }
 
     selectDailyChallenge();
