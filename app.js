@@ -60,30 +60,29 @@ function checkActiveTab() {
 document.addEventListener("visibilitychange", checkActiveTab);
 window.addEventListener("load", checkActiveTab);
 
-document.addEventListener("visibilitychange", checkActiveTab);
-window.addEventListener("load", checkActiveTab);
-
+// 📌 INVIO REPORT VIA EMAILJS
 document.getElementById("send-report").addEventListener("click", async () => {
     const socialTime = document.getElementById("social-time").textContent;
     const webTime = document.getElementById("internet-time").textContent;
 
-    emailjs.send("service_v8cqbdi", "template_vt8tycd", {
-        social_time: socialTime,
-        web_time: webTime,
-        to_email: "emanuele.zuffranieri@gmail.com"
-    }, "iGyf-gnBdUDe6-pwl")
-    .then(response => {
+    try {
+        const response = await emailjs.send("TUO_SERVICE_ID", "TUO_TEMPLATE_ID", {
+            social_time: socialTime,
+            web_time: webTime,
+            to_email: "emanuele.zuffranieri@gmail.com",
+        });
+
         alert("Report inviato con successo!");
-    }, error => {
-        console.error("Errore:", error);
+    } catch (error) {
+        console.error("Errore nell'invio del report:", error);
         alert("Errore nell'invio del report.");
-    });
+    }
 });
 
-// Funzione per aggiornare la curiosità ogni 10 minuti
+// 🔹 Lista curiosità
 const curiosities = [
-    "Spegnere il telefono prima di andare a letto riduce lo stress! Meno notifiche, meno ansia.",
-    "Passare meno tempo sui Social aumenta la felicità. Meno confronto con gli altri, più soddisfazione personale.",
+    "Spegnere il telefono prima di andare a letto riduce lo stress!",
+    "Passare meno tempo sui Social aumenta la felicità.",
     "Disconnettersi dai dispositivi elettronici aumenta la produttività.",
     "Mettere da parte il telefono promuove l'attività fisica."
 ];
@@ -95,6 +94,7 @@ function updateCuriosity() {
 updateCuriosity();
 setInterval(updateCuriosity, 600000);
 
+// 🔹 Lista sfide giornaliere
 document.addEventListener("DOMContentLoaded", () => {
     const dailyChallenges = [
         "Scrivi una pagina di diario sulla tua giornata di oggi.",
@@ -102,10 +102,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "Fai 20 minuti di attività fisica all’aperto.",
         "Organizza una serata giochi da tavolo!"
     ];
+    
     function selectDailyChallenge() {
         const randomIndex = Math.floor(Math.random() * dailyChallenges.length);
         document.getElementById("daily-challenge").textContent = dailyChallenges[randomIndex];
     }
+
     function completeChallenge() {
         const badgeContainer = document.getElementById("badges");
         const newBadge = document.createElement("p");
@@ -113,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         badgeContainer.appendChild(newBadge);
         selectDailyChallenge();
     }
+
     selectDailyChallenge();
     const completeButton = document.getElementById("complete-challenge");
     if (completeButton) {
