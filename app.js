@@ -32,8 +32,13 @@ function updateWebTime() {
 
 function checkActiveTab() {
     try {
-        let currentURL = window.location.href;
-        let referrer = document.referrer;
+        if (!window.location || !window.location.href) {
+            console.error("Errore: window.location.href è undefined");
+            return;
+        }
+
+        let currentURL = window.location.href || "";
+        let referrer = document.referrer || "";
 
         console.log("URL attuale:", currentURL);
         console.log("Referrer:", referrer);
