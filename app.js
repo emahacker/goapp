@@ -70,7 +70,6 @@ document.getElementById("send-report").addEventListener("click", async () => {
     });
 });
 
-
 // Funzione per aggiornare la curiosità ogni 10 minuti
 const curiosities = [
     "Spegnere il telefono prima di andare a letto riduce lo stress! Meno notifiche, meno ansia.",
