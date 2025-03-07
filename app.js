@@ -33,25 +33,32 @@ function updateWebTime() {
 function checkActiveTab() {
     const currentURL = window.location.href;
     const referrer = document.referrer;
-    console.log("URL attuale:", currentURL);
-    console.log("Referrer:", referrer);
+
+    // Ensure `social-time` and `internet-time` exist before accessing them
+    const socialTimeElement = document.getElementById("social-time");
+    const webTimeElement = document.getElementById("internet-time");
+
+    if (!socialTimeElement || !webTimeElement) {
+        console.error("Errore: elementi non trovati nel DOM.");
+        return;
+    }
 
     const isSocial = socialNetworks.some((social) => currentURL.includes(social) || referrer.includes(social));
     const isWhatsAppOrTelegram = currentURL.includes("whatsapp.com") || referrer.includes("whatsapp.com") ||
                                   currentURL.includes("telegram.org") || referrer.includes("telegram.org");
 
     if (isSocial && !isWhatsAppOrTelegram) {
-        console.log("Social rilevato, avvio timer...");
         socialTimer = startTimer(socialTimer, updateSocialTime);
         webTimer = stopTimer(webTimer);
     } else {
-        console.log("Navigazione normale, avvio timer web...");
         webTimer = startTimer(webTimer, updateWebTime);
         socialTimer = stopTimer(socialTimer);
     }
 }
 
-document.addEventListener("visibilitychange", checkActiveTab);
+// Ensure the function runs after the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", checkActiveTab);
+
 window.addEventListener("load", checkActiveTab);
 
 document.getElementById("send-report").addEventListener("click", async () => {
