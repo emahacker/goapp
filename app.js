@@ -61,34 +61,21 @@ document.addEventListener("DOMContentLoaded", checkActiveTab);
 
 window.addEventListener("load", checkActiveTab);
 
-document.getElementById("send-report").addEventListener("click", async () => {
+document.getElementById("send-report").addEventListener("click", function () {
     const socialTime = document.getElementById("social-time").textContent;
     const webTime = document.getElementById("internet-time").textContent;
 
-    try {
-        const response = await fetch("https://api.mailgun.net/v3/YOUR_DOMAIN/messages", {
-            method: "POST",
-            headers: {
-                "Authorization": "Basic " + btoa("api:YOUR_MAILGUN_API_KEY"),
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-                from: "Digital Detox <noreply@YOUR_DOMAIN>",
-                to: "emanuele.zuffranieri@gmail.com",
-                subject: "Report Utilizzo Digital Detox",
-                text: `Tempo sui Social: ${socialTime}\nTempo su Internet: ${webTime}`,
-            }),
-        });
-
-        if (response.ok) {
-            alert("Report inviato con successo!");
-        } else {
-            alert("Errore nell'invio del report.");
-        }
-    } catch (error) {
-        console.error("Errore:", error);
+    emailjs.send("service_v8cqbdi", "template_vt8tycd", {
+        social_time: socialTime,
+        web_time: webTime,
+        to_email: "TUA_EMAIL@esempio.com"
+    }, "YOUR_USER_ID")
+    .then(function (response) {
+        alert("Report inviato con successo!");
+    }, function (error) {
+        console.error("Errore nell'invio:", error);
         alert("Errore nell'invio del report.");
-    }
+    });
 });
 
 // Funzione per aggiornare la curiosità ogni 10 minuti
