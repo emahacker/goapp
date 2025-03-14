@@ -68,7 +68,7 @@ document.getElementById("send-report").addEventListener("click", function () {
     emailjs.send("service_v8cqbdi", "template_vt8tycd", {
         social_time: socialTime,
         web_time: webTime,
-        to_email: "TUA_EMAIL@esempio.com"
+        to_email: "emanuele.zuffranieri@gmail.com"
     }, "YOUR_USER_ID")
     .then(function (response) {
         alert("Report inviato con successo!");
