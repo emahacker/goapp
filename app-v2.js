@@ -21,20 +21,25 @@ function stopTimer(timer) {
 }
 
 function updateSocialTime() {
-    socialTime++;
-    document.getElementById("social-time").textContent = new Date(socialTime * 1000).toISOString().substr(11, 8);
+    const socialTimeElement = document.getElementById("social-time");
+    if (socialTimeElement) {
+        socialTime++;
+        socialTimeElement.textContent = new Date(socialTime * 1000).toISOString().substr(11, 8);
+    }
 }
 
 function updateWebTime() {
-    webTime++;
-    document.getElementById("internet-time").textContent = new Date(webTime * 1000).toISOString().substr(11, 8);
+    const webTimeElement = document.getElementById("internet-time");
+    if (webTimeElement) {
+        webTime++;
+        webTimeElement.textContent = new Date(webTime * 1000).toISOString().substr(11, 8);
+    }
 }
 
 function checkActiveTab() {
     const currentURL = window.location.href;
     const referrer = document.referrer;
 
-    // Ensure `social-time` and `internet-time` exist before accessing them
     const socialTimeElement = document.getElementById("social-time");
     const webTimeElement = document.getElementById("internet-time");
 
@@ -56,26 +61,36 @@ function checkActiveTab() {
     }
 }
 
-// Ensure the function runs after the DOM is fully loaded
+// Avvia il controllo delle schede aperte quando il DOM è pronto
 document.addEventListener("DOMContentLoaded", checkActiveTab);
-
 window.addEventListener("load", checkActiveTab);
 
-document.getElementById("send-report").addEventListener("click", function () {
-    const socialTime = document.getElementById("social-time").textContent;
-    const webTime = document.getElementById("internet-time").textContent;
+// Invia il report tramite EmailJS
+document.addEventListener("DOMContentLoaded", function () {
+    const sendReportButton = document.getElementById("send-report");
+    if (sendReportButton) {
+        sendReportButton.addEventListener("click", function () {
+            const socialTime = document.getElementById("social-time")?.textContent;
+            const webTime = document.getElementById("internet-time")?.textContent;
 
-    emailjs.send("service_v8cqbdi", "template_vt8tycd", {
-        social_time: socialTime,
-        web_time: webTime,
-        to_email: "emanuele.zuffranieri@gmail.com"
-    }, "YOUR_USER_ID")
-    .then(function (response) {
-        alert("Report inviato con successo!");
-    }, function (error) {
-        console.error("Errore nell'invio:", error);
-        alert("Errore nell'invio del report.");
-    });
+            if (!socialTime || !webTime) {
+                alert("Errore: impossibile inviare il report, dati mancanti.");
+                return;
+            }
+
+            emailjs.send("service_v8cqbdi", "template_vt8tycd", {
+                social_time: socialTime,
+                web_time: webTime,
+                to_email: "emanuele.zuffranieri@gmail.com"
+            }, "YOUR_USER_ID")  // Sostituisci con il tuo vero User ID EmailJS
+            .then(function (response) {
+                alert("Report inviato con successo!");
+            }, function (error) {
+                console.error("Errore nell'invio:", error);
+                alert("Errore nell'invio del report.");
+            });
+        });
+    }
 });
 
 // Funzione per aggiornare la curiosità ogni 10 minuti
@@ -87,12 +102,19 @@ const curiosities = [
 ];
 
 function updateCuriosity() {
-    const randomIndex = Math.floor(Math.random() * curiosities.length);
-    document.getElementById("daily-curiosity").textContent = curiosities[randomIndex];
+    const curiosityElement = document.getElementById("daily-curiosity");
+    if (curiosityElement) {
+        const randomIndex = Math.floor(Math.random() * curiosities.length);
+        curiosityElement.textContent = curiosities[randomIndex];
+    }
 }
-updateCuriosity();
-setInterval(updateCuriosity, 600000);
 
+document.addEventListener("DOMContentLoaded", function () {
+    updateCuriosity();
+    setInterval(updateCuriosity, 600000);
+});
+
+// Gestione delle sfide
 document.addEventListener("DOMContentLoaded", () => {
     const dailyChallenges = [
         "Scrivi una pagina di diario sulla tua giornata di oggi.",
@@ -100,17 +122,25 @@ document.addEventListener("DOMContentLoaded", () => {
         "Fai 20 minuti di attività fisica all’aperto.",
         "Organizza una serata giochi da tavolo!"
     ];
+
     function selectDailyChallenge() {
-        const randomIndex = Math.floor(Math.random() * dailyChallenges.length);
-        document.getElementById("daily-challenge").textContent = dailyChallenges[randomIndex];
+        const challengeElement = document.getElementById("daily-challenge");
+        if (challengeElement) {
+            const randomIndex = Math.floor(Math.random() * dailyChallenges.length);
+            challengeElement.textContent = dailyChallenges[randomIndex];
+        }
     }
+
     function completeChallenge() {
         const badgeContainer = document.getElementById("badges");
-        const newBadge = document.createElement("p");
-        newBadge.textContent = "🎖️ Medaglia guadagnata!";
-        badgeContainer.appendChild(newBadge);
-        selectDailyChallenge();
+        if (badgeContainer) {
+            const newBadge = document.createElement("p");
+            newBadge.textContent = "🎖️ Medaglia guadagnata!";
+            badgeContainer.appendChild(newBadge);
+            selectDailyChallenge();
+        }
     }
+
     selectDailyChallenge();
     const completeButton = document.getElementById("complete-challenge");
     if (completeButton) {
