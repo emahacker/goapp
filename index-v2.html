@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Digital Detox</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            emailjs.init("service_v8cqbdi");  // Sostituisci con il tuo User ID di EmailJS
+        });
+    </script>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <img src="file.png" alt="Digital Detox Logo" class="header-logo">
+        <h1>Benvenuto nella tua Digital Detox App di Offline!</h1>
+    </div>
+</header>
+
+<main>
+    <!-- Timer Section -->
+    <section id="timers">
+        <div class="timer" id="social-timer">
+            <h2>Tempo Social</h2>
+            <p id="social-time">00:00:00</p>
+        </div>
+        <div class="timer" id="internet-timer">
+            <h2>Tempo in Rete</h2>
+            <p id="internet-time">00:00:00</p>
+        </div>
+    </section>
+
+    <div class="report-button">
+        <button id="send-report" class="button">Invia Report</button>
+    </div>
+
+    <!-- Challenge Section -->
+    <section id="challenge">
+        <h2>La Sfida del Giorno</h2>
+        <p id="daily-challenge">"Leggi un capitolo di un libro cartaceo"</p>
+        <button id="complete-challenge">Completa la Sfida</button>
+    </section>
+
+    <!-- Rewards Section -->
+    <section id="rewards">
+        <h2>Premi e Ricompense</h2>
+        <div id="badges">
+            <p>Nessun badge ancora!</p>
+        </div>
+    </section>
+
+    <!-- Curiosity Section -->
+    <section id="curiosity">
+        <h2>Curiosità</h2>
+        <p id="daily-curiosity">"Lo sapevi? La luce blu degli schermi può influire sulla qualità del sonno."</p>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <img src="footer-logo.jpg" alt="Loghi Footer" class="footer-logo">
+    </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="app-v2.js"></script>
+
+</body>
+</html>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 802b156 (Ottimizzato index.html e EmailJS)
